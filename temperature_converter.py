@@ -31,6 +31,16 @@ def convert_temperature(*args):
     except ValueError:
         label_result.config(text="Enter a valid number!")
 
+# Update Dropdown Options
+def update_dropdowns(*args):
+    from_unit = combo_from.get()
+    units = ["Celsius", "Fahrenheit", "Kelvin"]
+    available_to_units = [unit for unit in units if unit != from_unit]
+    combo_to["values"] = available_to_units
+    if combo_to.get() == from_unit:  # Reset if the selected value matches the excluded one
+        combo_to.set(available_to_units[0])
+    convert_temperature()  # Trigger conversion after dropdown change
+
 # GUI Setup
 root = tk.Tk()
 root.title("Temperature Converter")
@@ -50,12 +60,12 @@ label_from.pack(pady=5)
 combo_from = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly", font=("Arial", 12))
 combo_from.set("Celsius")  # Default value
 combo_from.pack()
-combo_from.bind("<<ComboboxSelected>>", convert_temperature)  # Trigger conversion on selection change
+combo_from.bind("<<ComboboxSelected>>", update_dropdowns)  # Trigger dropdown update
 
 # To Dropdown
 label_to = tk.Label(root, text="To:", bg="#E6E6FA", font=("Arial", 12))
 label_to.pack(pady=5)
-combo_to = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly", font=("Arial", 12))
+combo_to = ttk.Combobox(root, values=["Fahrenheit", "Kelvin"], state="readonly", font=("Arial", 12))
 combo_to.set("Fahrenheit")  # Default value
 combo_to.pack()
 combo_to.bind("<<ComboboxSelected>>", convert_temperature)  # Trigger conversion on selection change
