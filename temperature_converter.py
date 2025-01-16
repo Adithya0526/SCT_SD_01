@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 
 # Conversion Functions
-def convert_temperature():
+def convert_temperature(*args):
     try:
         input_value = float(entry_temp.get())
         from_unit = combo_from.get()
@@ -29,40 +29,40 @@ def convert_temperature():
         
         label_result.config(text=f"Result: {result:.2f} {to_unit}")
     except ValueError:
-        messagebox.showerror("Input Error", "Please enter a valid number.")
+        label_result.config(text="Enter a valid number!")
 
 # GUI Setup
 root = tk.Tk()
 root.title("Temperature Converter")
-root.geometry("400x300")
+root.geometry("400x350")
+root.configure(bg="#E6E6FA")  # Lavender background
 
 # Input Field
-label_temp = tk.Label(root, text="Enter Temperature:")
+label_temp = tk.Label(root, text="Enter Temperature:", bg="#E6E6FA", font=("Arial", 12))
 label_temp.pack(pady=10)
-entry_temp = tk.Entry(root, width=10)
+entry_temp = tk.Entry(root, width=10, font=("Arial", 14))
 entry_temp.pack()
+entry_temp.bind("<KeyRelease>", convert_temperature)  # Trigger conversion on input change
 
 # From Dropdown
-label_from = tk.Label(root, text="From:")
-label_from.pack()
-combo_from = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly")
+label_from = tk.Label(root, text="From:", bg="#E6E6FA", font=("Arial", 12))
+label_from.pack(pady=5)
+combo_from = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly", font=("Arial", 12))
 combo_from.set("Celsius")  # Default value
 combo_from.pack()
+combo_from.bind("<<ComboboxSelected>>", convert_temperature)  # Trigger conversion on selection change
 
 # To Dropdown
-label_to = tk.Label(root, text="To:")
-label_to.pack()
-combo_to = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly")
+label_to = tk.Label(root, text="To:", bg="#E6E6FA", font=("Arial", 12))
+label_to.pack(pady=5)
+combo_to = ttk.Combobox(root, values=["Celsius", "Fahrenheit", "Kelvin"], state="readonly", font=("Arial", 12))
 combo_to.set("Fahrenheit")  # Default value
 combo_to.pack()
-
-# Convert Button
-btn_convert = tk.Button(root, text="Convert", command=convert_temperature)
-btn_convert.pack(pady=20)
+combo_to.bind("<<ComboboxSelected>>", convert_temperature)  # Trigger conversion on selection change
 
 # Result Label
-label_result = tk.Label(root, text="Result: ", font=("Arial", 14))
-label_result.pack(pady=10)
+label_result = tk.Label(root, text="Result: ", bg="#E6E6FA", font=("Arial", 16))
+label_result.pack(pady=20)
 
 # Run the application
 root.mainloop()
